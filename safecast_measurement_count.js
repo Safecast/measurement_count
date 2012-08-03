@@ -1,6 +1,13 @@
 //TODO check for the existence of Safecast variable and add method without killing other methods
+
+
 var Safecast = {
-  getMeasurementCount: function () {
+  getMeasurementCount: function (element_id) {
+    if (typeof(element_id) != 'string') {
+      alert('Safecast.getMeasurementCount() called with non-string argument');
+      return;
+    }
+
     var xmlhttp;
     if (window.XMLHttpRequest)
     {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -20,7 +27,7 @@ var Safecast = {
         var jsonResponse = JSON.parse(xmlhttp.responseText);
         var count = jsonResponse.count;
 
-        var destination = document.getElementById('safecast_measurement_count');
+        var destination = document.getElementById(element_id);
         if (destination) {
           destination.innerHTML = count;
         }
