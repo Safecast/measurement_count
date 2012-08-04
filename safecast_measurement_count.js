@@ -4,6 +4,8 @@ if (window.safecast != undefined) {
   window.safecast = {};
 }
 
+safecast.api_key = null;
+
 if (safecast.getMeasurementCount != undefined) {
   console.log('WARNING! safecast.getMeasurementCount is already defined and is about to be overwritten!');
 }
@@ -23,11 +25,15 @@ safecast.getMeasurementCount = function (element_id) {
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
 
-  xmlhttp.open("GET", 'https://api.safecast.org/api/measurements/count', true);
+  var url = 'https://api.safecast.org/api/measurements/count';
+  if (safecast.api_key != null) {
+    url += '?api_key=' + safecast.api_key;
+  }
+  xmlhttp.open("GET", url, true);
   xmlhttp.setRequestHeader('Accept', 'application/json');
 
   xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
       //request is done and good
       var jsonResponse = JSON.parse(xmlhttp.responseText);
       var count = jsonResponse.count;
